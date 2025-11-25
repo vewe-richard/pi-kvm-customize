@@ -95,7 +95,7 @@ function __showKvmdInfo(info) {
 		|| tools.config.getBool("index--hide-kvm-button", false)
 	);
 	if (!hide_kvm_button) {
-		html += __makeApp(null, "kvm", "share/svg/kvm.svg", "KVM");
+		html += __makeApp(null, "xxx", "share/svg/kvm.svg", "XXX");
 	}
 
 	for (let app of apps) {
