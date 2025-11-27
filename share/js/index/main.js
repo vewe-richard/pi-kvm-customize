@@ -95,12 +95,12 @@ function __showKvmdInfo(info) {
 		|| tools.config.getBool("index--hide-kvm-button", false)
 	);
 	if (!hide_kvm_button) {
-		html += __makeApp(null, "kvm", "share/svg/kvm.svg", "KVM");
+		html += __makeApp(null, "xxx", "share/svg/kvm.svg", "   ");
 	}
 
 	for (let app of apps) {
 		if (app.place >= 0 && (app.enabled || app.started)) {
-			html += __makeApp(null, app.path, app.icon, app.name);
+			html += __makeApp2(null, app.path, app.icon, app.name);
 		}
 	}
 
@@ -131,6 +131,23 @@ function __makeApp(id, path, icon, name) {
 	return `<li>
 		<div ${e_add_id} class="app">
 			<a href="${tools.escape(ROOT_PREFIX + path)}/">
+				<div>
+					<img class="svg-gray" src="${tools.escape(ROOT_PREFIX + icon)}">
+					${tools.escape(name)}
+				</div>
+			</a>
+		</div>
+	</li>`;
+}
+
+function __makeApp2(id, path, icon, name) {
+	// Tailing slash in href is added to avoid Nginx 301 redirect
+	// when the location doesn't have tailing slash: "foo -> foo/".
+	// Reverse proxy over PiKVM can be misconfigured to handle this.
+	let e_add_id = (id ? `id="${tools.escape(id)}"` : "");
+	return `<li>
+		<div ${e_add_id} class="app">
+            <a href="javascript:void(0)" onclick="checkPassword('${tools.escape(ROOT_PREFIX + path)}/')">
 				<div>
 					<img class="svg-gray" src="${tools.escape(ROOT_PREFIX + icon)}">
 					${tools.escape(name)}
