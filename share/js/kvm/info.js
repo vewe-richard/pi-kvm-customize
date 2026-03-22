@@ -58,10 +58,10 @@ export function Info() {
 
 			if (state.server && state.server.host) {
 				$("kvmd-meta-server-host").innerText = state.server.host;
-				document.title = `${state.server.host} | PiKVM Session`;
+				document.title = `${state.server.host} | xxx Session`;
 			} else {
 				$("kvmd-meta-server-host").innerText = "";
-				document.title = "PiKVM Session";
+				document.title = "xxx Session";
 			}
 
 			for (let place of ["left", "right"]) {
