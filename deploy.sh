@@ -46,9 +46,9 @@ else
     echo "-> Pacman hook already installed."
 fi
 
-# Make filesystem read-only
+# Make filesystem read-only (may fail if fs is busy, that's ok)
 if command -v ro &>/dev/null; then
-    ro
+    ro || true
 fi
 
 echo "=== Deploy complete. Reload browser to see changes. ==="
