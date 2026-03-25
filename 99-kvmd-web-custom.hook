@@ -1,0 +1,12 @@
+# Installed by deploy.sh to /etc/pacman.d/hooks/99-kvmd-web-custom.hook
+# Re-deploys custom web UI after kvmd package update.
+
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = kvmd
+
+[Action]
+Description = Re-deploying custom web UI after kvmd update...
+When = PostTransaction
+Exec = /root/pi-kvm-customize/deploy.sh
