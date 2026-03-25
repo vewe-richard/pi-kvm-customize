@@ -1,0 +1,17 @@
+# Copy to /etc/pacman.d/hooks/99-kvmd-web-custom.hook on PiKVM device
+#
+# Install:
+#   rw
+#   mkdir -p /etc/pacman.d/hooks
+#   cp /usr/share/kvmd/web/99-kvmd-web-custom.hook /etc/pacman.d/hooks/
+#   ro
+
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = kvmd
+
+[Action]
+Description = Re-deploying custom web UI after kvmd update...
+When = PostTransaction
+Exec = /usr/share/kvmd/web/deploy.sh
