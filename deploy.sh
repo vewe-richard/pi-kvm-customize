@@ -4,17 +4,17 @@
 # First time:
 #   ssh root@pikvm
 #   rw
-#   cd /usr/share/kvmd/
-#   mv web web-bak
-#   git clone https://github.com/vewe-richard/pi-kvm-customize.git web
-#   cd web/
+#   cd /root
+#   git clone https://github.com/vewe-richard/pi-kvm-customize.git
+#   cd pi-kvm-customize
 #   ./deploy.sh
 #
 # After that, pikvm-update will auto-restore custom UI via pacman hook.
 
 set -euo pipefail
 
-KVMD_DIR="/usr/share/kvmd"
+REPO_DIR="/root/pi-kvm-customize"
+KVMD_WEB="/usr/share/kvmd/web"
 HOOK_DIR="/etc/pacman.d/hooks"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -24,6 +24,17 @@ echo "=== PiKVM Web UI Custom Deploy ==="
 if command -v rw &>/dev/null; then
     rw
 fi
+
+# Backup original web dir if first time
+if [ -d "${KVMD_WEB}" ] && [ ! -d "${KVMD_WEB}-bak" ]; then
+    echo "-> Backing up original web dir..."
+    mv "${KVMD_WEB}" "${KVMD_WEB}-bak"
+fi
+
+# Copy repo files to kvmd web dir
+echo "-> Copying custom UI to ${KVMD_WEB}..."
+rm -rf "${KVMD_WEB}"
+cp -a "${SCRIPT_DIR}" "${KVMD_WEB}"
 
 # Install pacman hook if not already present
 if [ ! -f "${HOOK_DIR}/99-kvmd-web-custom.hook" ]; then

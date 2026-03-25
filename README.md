@@ -24,20 +24,24 @@ Customized PiKVM web UI with white-labeling and simplified interface.
 ```bash
 ssh root@<pikvm-ip>
 rw
-cd /usr/share/kvmd/
-mv web web-bak
-git clone https://github.com/vewe-richard/pi-kvm-customize.git web
-cd web/
+cd /root
+git clone https://github.com/vewe-richard/pi-kvm-customize.git
+cd pi-kvm-customize
 ./deploy.sh
 ```
 
-After this, the pacman hook is installed and future kvmd updates will automatically restore the custom UI. No manual intervention needed.
+This will:
+1. Backup original `/usr/share/kvmd/web` to `/usr/share/kvmd/web-bak`
+2. Copy custom UI files to `/usr/share/kvmd/web`
+3. Install pacman hook to `/etc/pacman.d/hooks/`
+
+After this, `pikvm-update` will automatically restore the custom UI. No manual intervention needed.
 
 ### After kvmd Update (if hook fails or not installed)
 
 ```bash
 ssh root@<pikvm-ip>
-/usr/share/kvmd/web/deploy.sh
+/root/pi-kvm-customize/deploy.sh
 ```
 
 ## Local Preview
