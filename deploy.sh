@@ -8,7 +8,7 @@
 #   mv web web-bak
 #   git clone https://github.com/vewe-richard/pi-kvm-customize.git web
 #   cd web
-#   git checkout customer-feedback-round1
+#   git checkout main
 #   ro
 #
 # After kvmd update (web dir gets overwritten):
@@ -18,7 +18,7 @@
 #   rm -rf web
 #   git clone https://github.com/vewe-richard/pi-kvm-customize.git web
 #   cd web
-#   git checkout customer-feedback-round1
+#   git checkout main
 #   ro
 #
 # Or run this script on the PiKVM device:
@@ -28,7 +28,7 @@ set -euo pipefail
 
 KVMD_DIR="/usr/share/kvmd"
 REPO="https://github.com/vewe-richard/pi-kvm-customize.git"
-BRANCH="customer-feedback-round1"
+BRANCH="main"
 
 echo "=== PiKVM Web UI Custom Deploy ==="
 
