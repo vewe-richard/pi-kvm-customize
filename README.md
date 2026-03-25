@@ -27,36 +27,13 @@ rw
 cd /usr/share/kvmd/
 mv web web-bak
 git clone https://github.com/vewe-richard/pi-kvm-customize.git web
-cd web
-git checkout main
-ro
+cd web/
+./deploy.sh
 ```
 
-### Install Pacman Hook (one-time)
+After this, the pacman hook is installed and future kvmd updates will automatically restore the custom UI. No manual intervention needed.
 
-This ensures the custom UI is automatically restored after `pikvm-update`:
-
-```bash
-rw
-mkdir -p /etc/pacman.d/hooks
-cp /usr/share/kvmd/web/99-kvmd-web-custom.hook /etc/pacman.d/hooks/
-ro
-```
-
-### After kvmd Update (manual, if hook not installed)
-
-```bash
-ssh root@<pikvm-ip>
-rw
-cd /usr/share/kvmd/
-rm -rf web
-git clone https://github.com/vewe-richard/pi-kvm-customize.git web
-cd web
-git checkout main
-ro
-```
-
-### Or Run the Deploy Script
+### After kvmd Update (if hook fails or not installed)
 
 ```bash
 ssh root@<pikvm-ip>

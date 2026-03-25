@@ -1,10 +1,5 @@
-# Copy to /etc/pacman.d/hooks/99-kvmd-web-custom.hook on PiKVM device
-#
-# Install:
-#   rw
-#   mkdir -p /etc/pacman.d/hooks
-#   cp /usr/share/kvmd/web/99-kvmd-web-custom.hook /etc/pacman.d/hooks/
-#   ro
+# Installed by deploy.sh to /etc/pacman.d/hooks/99-kvmd-web-custom.hook
+# Re-clones custom web UI after kvmd package update.
 
 [Trigger]
 Operation = Upgrade
@@ -14,4 +9,4 @@ Target = kvmd
 [Action]
 Description = Re-deploying custom web UI after kvmd update...
 When = PostTransaction
-Exec = /usr/share/kvmd/web/deploy.sh
+Exec = /bin/bash -c "cd /usr/share/kvmd && rm -rf web && git clone https://github.com/vewe-richard/pi-kvm-customize.git web"

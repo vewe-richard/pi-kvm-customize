@@ -7,28 +7,16 @@
 #   cd /usr/share/kvmd/
 #   mv web web-bak
 #   git clone https://github.com/vewe-richard/pi-kvm-customize.git web
-#   cd web
-#   git checkout main
-#   ro
+#   cd web/
+#   ./deploy.sh
 #
-# After kvmd update (web dir gets overwritten):
-#   ssh root@pikvm
-#   rw
-#   cd /usr/share/kvmd/
-#   rm -rf web
-#   git clone https://github.com/vewe-richard/pi-kvm-customize.git web
-#   cd web
-#   git checkout main
-#   ro
-#
-# Or run this script on the PiKVM device:
-#   /usr/share/kvmd/web/deploy.sh
+# After that, pikvm-update will auto-restore custom UI via pacman hook.
 
 set -euo pipefail
 
 KVMD_DIR="/usr/share/kvmd"
-REPO="https://github.com/vewe-richard/pi-kvm-customize.git"
-BRANCH="main"
+HOOK_DIR="/etc/pacman.d/hooks"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "=== PiKVM Web UI Custom Deploy ==="
 
@@ -37,21 +25,15 @@ if command -v rw &>/dev/null; then
     rw
 fi
 
-cd "${KVMD_DIR}"
-
-# Backup original if first time
-if [ -d web ] && [ ! -d web-bak ]; then
-    echo "-> Backing up original web dir..."
-    mv web web-bak
-elif [ -d web ]; then
-    echo "-> Removing overwritten web dir..."
-    rm -rf web
+# Install pacman hook if not already present
+if [ ! -f "${HOOK_DIR}/99-kvmd-web-custom.hook" ]; then
+    echo "-> Installing pacman hook..."
+    mkdir -p "${HOOK_DIR}"
+    cp "${SCRIPT_DIR}/99-kvmd-web-custom.hook" "${HOOK_DIR}/"
+    echo "   Installed to ${HOOK_DIR}/99-kvmd-web-custom.hook"
+else
+    echo "-> Pacman hook already installed."
 fi
-
-echo "-> Cloning custom UI..."
-git clone "${REPO}" web
-cd web
-git checkout "${BRANCH}"
 
 # Make filesystem read-only
 if command -v ro &>/dev/null; then
